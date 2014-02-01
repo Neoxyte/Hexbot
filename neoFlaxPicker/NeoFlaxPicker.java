@@ -21,11 +21,6 @@ import org.hexbot.api.methods.Camera;
 import org.hexbot.api.util.Timer;
 import org.hexbot.core.concurrent.script.Info;
 import org.hexbot.core.concurrent.script.TaskScript;
-
-/* Make sure to either 1. put your bank pin in before starting the script
- *                 OR  2. select your account under account settings in the bot with proper pin
- *
-*/
  
 @Info(author = "neoxyte", name = "NeoFlaxPicker", description = "Picks flax in Seers Village.")
 
