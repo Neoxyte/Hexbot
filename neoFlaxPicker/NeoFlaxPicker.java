@@ -91,7 +91,7 @@ public class NeoFlaxPicker extends TaskScript implements Paintable {
 		paint.setColor(Color.CYAN);
 		paint.fillRect(5, 235, 250, 100);
 		paint.setColor(Color.BLACK);
-		paint.drawString("NeoFletch- Made by Neoxyte", 10, 250);
+		paint.drawString("NeoFlaxPicker- Made by Neoxyte", 10, 250);
 		paint.drawString("Time Running: " + scriptTimer.toElapsedString(), 10, 270);
 		paint.drawString("Flax Banked: " + String.valueOf(Stats.flaxBanked), 10, 285);
 		paint.drawString("Flax per Hour: " + String.valueOf(Stats.flaxPerHour), 10, 300);
