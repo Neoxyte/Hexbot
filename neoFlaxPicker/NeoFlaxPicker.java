@@ -2,6 +2,11 @@ package neoFlaxPicker;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
 
 import neoFlaxPicker.companies.Banking;
 import neoFlaxPicker.companies.Harvesting;
@@ -19,15 +24,8 @@ import org.hexbot.core.concurrent.script.TaskScript;
 
 /* Make sure to either 1. put your bank pin in before starting the script
  *                 OR  2. select your account under account settings in the bot with proper pin
- *                 
- * TODO: GUI, improve antiban, draw better paint, test for longer periods of time.
- * 
- * Antiban ideas:
- * -Human error (Misclicks, breaks, camera rotation, banking errors).
- * -Log out if jmod nearby.
- * -Turn private off and turn public off.
- * -talking using custom text file that can be uploaded to pastie?
- */
+ *
+*/
  
 @Info(author = "neoxyte", name = "NeoFlaxPicker", description = "Picks flax in Seers Village.")
 
@@ -36,16 +34,13 @@ public class NeoFlaxPicker extends TaskScript implements Paintable {
 	public static Timer scriptTimer =  new Timer(999999999);
 	public static long startTime = System.currentTimeMillis();
 	
+	public static Image paintImage = null;
+	
 	public static boolean debugOn = false;
 	
 	
 	public static void log(String output) {
-		if (debugOn) {
-			System.out.println("\n" + Stats.timeRunning() + output);
-		}
-		else {
-			System.out.println(output);
-		}
+		System.out.println("\n" + Stats.timeRunning() + output);
 	}
 	
 	public NeoFlaxPicker() {
@@ -56,6 +51,7 @@ public class NeoFlaxPicker extends TaskScript implements Paintable {
 	}
  
     public void onStart() {
+    	setUpPaintImage();
     	if(debugOn) {
     		log( " NeoFlaxPicker script version " + Stats.scriptVersion + " started.");
     	}
@@ -68,6 +64,16 @@ public class NeoFlaxPicker extends TaskScript implements Paintable {
     	}
     }
 
+    public static void setUpPaintImage() {
+        try {
+            URL url = new URL("http://i.imgur.com/H20zJWW.png");
+            paintImage = ImageIO.read(url);
+        } catch (IOException e) {
+        	log("Can not find paint image. Is imgur.com down?");
+            return;
+        }
+    }
+    
    private void paintCalculations() {
 	   long timeRan = System.currentTimeMillis() - startTime;
        
@@ -76,27 +82,23 @@ public class NeoFlaxPicker extends TaskScript implements Paintable {
        Stats.flaxPerHour = (int) (flaxBankedPerMs * 3600 * 1000);
        
        //Profit gained
-       Stats.profitGained = Stats.flaxBanked * 30;
+       Stats.profitGained = Stats.flaxBanked * 35;
        
        //Profit per hour
        double profitPerMillisecond = Stats.profitGained * 1.0 / timeRan;
        Stats.profitPerHour = (int) (profitPerMillisecond * 3600 * 1000);
        
-       
-
     } 
     
 	public void paint(Graphics paint) {
 		paintCalculations();
-		paint.setColor(Color.CYAN);
-		paint.fillRect(5, 235, 250, 100);
-		paint.setColor(Color.BLACK);
-		paint.drawString("NeoFlaxPicker- Made by Neoxyte", 10, 250);
-		paint.drawString("Time Running: " + scriptTimer.toElapsedString(), 10, 270);
-		paint.drawString("Flax Banked: " + String.valueOf(Stats.flaxBanked), 10, 285);
-		paint.drawString("Flax per Hour: " + String.valueOf(Stats.flaxPerHour), 10, 300);
-		paint.drawString("Profit Gained: " + String.valueOf(Stats.profitGained),10, 315);
-		paint.drawString("Profit per Hour: " + String.valueOf(Stats.profitPerHour), 10, 330);
+		paint.drawImage(paintImage, 5, 5, null);
+		paint.setColor(Color.WHITE);
+		paint.drawString(scriptTimer.toElapsedString(), 26, 62); //Time Running
+		paint.drawString(String.valueOf(Stats.flaxBanked), 26, 95); 
+		paint.drawString(String.valueOf(Stats.profitGained), 26, 129); 
+		paint.drawString(String.valueOf(Stats.flaxPerHour), 26, 162);
+		paint.drawString(String.valueOf(Stats.profitPerHour), 26, 197); 
 	}
     
 }
