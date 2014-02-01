@@ -23,7 +23,10 @@ public class ToFlax extends Worker {
 	public void run() {
 		checkEnergy();
 		Path toFlaxPath = Walking.generatePath(new Tile(2741 + Random.nextInt(-7, 7), (3444 + Random.nextInt(-5, 5))));
-		toFlaxPath.traverse();
+		if(Constants.scriptZone.contains(toFlaxPath.getNext().getX(), toFlaxPath.getNext().getY())) {
+			//Will only walk path if it is inside contained zone to avoid it walking out of zone
+			toFlaxPath.traverse();
+		}
 	}
 
 	@Override

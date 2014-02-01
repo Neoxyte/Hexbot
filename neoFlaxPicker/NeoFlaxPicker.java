@@ -26,7 +26,6 @@ import org.hexbot.core.concurrent.script.TaskScript;
  * -Human error (Misclicks, breaks, camera rotation, banking errors).
  * -Log out if jmod nearby.
  * -Turn private off and turn public off.
- * -Widen script zone just a little (due to path finding that sometimes go far too east
  * -talking using custom text file that can be uploaded to pastie?
  */
  
@@ -37,7 +36,7 @@ public class NeoFlaxPicker extends TaskScript implements Paintable {
 	public static Timer scriptTimer =  new Timer(999999999);
 	public static long startTime = System.currentTimeMillis();
 	
-	public static boolean debugOn = true;
+	public static boolean debugOn = false;
 	
 	
 	public static void log(String output) {
